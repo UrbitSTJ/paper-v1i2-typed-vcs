@@ -38,7 +38,11 @@ for footnote_link in footnote_links:
     # Store the footnote link and anchor in a dict.
     start = footnote_link.end() + anchor_id.span()[0] + len(anchor_id.group(0)) - 3
     begin = html[start:].find('"')
-    footnote_dict[footnote_id.group(0)[9:-2]] = html[start:start+begin]
+    try:
+        footnote_dict[footnote_id.group(0)[9:-2]] = html[start:start+begin]
+    except:
+        print(footnote_id)
+        continue
 print(footnote_dict)
 
 # Load the footnotes in files "mss2.html" etc. and extract text.

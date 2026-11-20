@@ -11,11 +11,20 @@
 \usepackage{mathspec}
 \setmathtt[Scale=MatchLowercase]{Urbit Sans Mono TT SemiBold}
 \usepackage[osf]{libertineRoman}
-\newfontfamily\monofont{Urbit Sans Mono TT SemiBold}[Scale=MatchLowercase]
+\newfontfamily\monofont{UrbitSansMonoBar-SemiBold.otf}[
+  Scale=MatchLowercase,
+  % BoldFont=Urbit Sans Mono TT Light,
+  ]
+\newlength{\nockmonocolwidth}
+\newcommand{\nockmonochar}[2]{{\begingroup\monofont\settowidth{\nockmonocolwidth}{0}\makebox[\nockmonocolwidth][#1]{#2}\endgroup}}
+\newcommand{\nocklfloor}{\nockmonochar{l}{\symbol{"230A}}}
+\newcommand{\nockrfloor}{\nockmonochar{r}{\symbol{"230B}}}
+\newcommand{\nockomega}{\nockmonochar{c}{\symbol{"03C9}}}
+\newcommand{\nockOmega}{\nockmonochar{c}{\symbol{"03A9}}}
 \renewcommand{\setmonofont}{\monofont}
 \renewcommand{\texttt}[1]{{\monofont #1}}
 % Define a new font family for small caps with FakeSlant
-\newfontfamily\slantedsmallcapsfont{Linux Libertine O}[
+\newfontfamily\slantedsmallcapsfont{Libertinus Serif}[
     FakeSlant = 0.1 % Adjust the slant amount as needed
 ]
 % Redefine \textsc to make small caps 25% larger
@@ -24,7 +33,12 @@
 \newcommand{\ssc}[1]{{\slantedsmallcapsfont\textsc{#1}}}
 
 \usepackage{listings}
+% \renewcommand{\setmathfont}{\monofont}
+% \lstset{
+%   mathescape=true,
+% }
 \usepackage[dvipsnames]{xcolor}
+\definecolor{darkgray}{rgb}{0.25, 0.25, 0.25}
 \lstdefinelanguage{Hoon}
 {
   alsoletter={
@@ -67,8 +81,11 @@
     upquote=true,
     breaklines=true,
     breakatwhitespace=true,
+    literate={⌊}{{\nocklfloor}}1 {⌋}{{\nockrfloor}}1 {ω}{{\nockomega}}1 {Ω}{{\nockOmega}}1,
     commentstyle=\color{darkgray}\emph,
-    keywordstyle=\bfseries
+    keywordstyle=\bfseries,
+    moredelim=[is][\underline]{@}{@},
+    escapechar=\textbackslash,
 }
 \lstdefinestyle{listingcode}{
     language=Hoon,
@@ -84,22 +101,30 @@
     upquote=true,
     breaklines=true,
     breakatwhitespace=true,
+    literate={ω}{{\nockomega}}1 {Ω}{{\nockOmega}}1,
     commentstyle=\color{darkgray}\emph,
-    keywordstyle=\color{darkgray}\bfseries
+    keywordstyle=\bfseries,
+    moredelim=[is][\underline]{@}{@},
+    escapeinside={(*@}{@*)}
 }
 \lstdefinestyle{listingblock}{
     language=Hoon,
     basicstyle=\setmonofont\small,
     numbers=left, numberstyle=\tiny, stepnumber=5, firstnumber=1, numberfirstline=false,
     tabsize=2,
-    columns=fixed,
+  columns=fullflexible,
     showstringspaces=false,
     showtabs=false,
     showspaces=false,
     keepspaces,
     upquote=true,
+    breaklines=true,
+    breakatwhitespace=true,
+    literate={ω}{{\nockomega}}1 {Ω}{{\nockOmega}}1,
     commentstyle=\color{darkgray}\emph,
-    keywordstyle=\color{darkgray}\bfseries
+    keywordstyle=\bfseries,
+    moredelim=[is][\underline]{@}{@},
+    escapeinside={(*@}{@*)}
 }
 \lstdefinestyle{listingcode_python}{
     language=Python,
